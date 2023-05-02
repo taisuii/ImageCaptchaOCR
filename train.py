@@ -19,7 +19,7 @@ if __name__ == '__main__':
     w = SummaryWriter("logs")
     total_step = 0
 
-for i in range(50):
+for i in range(15):
     for i, (imgs, targets) in enumerate(train_dataloader):
         imgs = imgs.cuda()
         targets = targets.cuda()
