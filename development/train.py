@@ -29,15 +29,12 @@ for i in range(15):
         # print(outputs.shape)
         loss = loss_fn(outputs, targets)
         optimizer.zero_grad()
-
         loss.backward()
         optimizer.step()
-
         if i % 10 == 0:
             total_step += 1
             print("训练{}次,loss:{}".format(total_step * 10, loss.item()))
             w.add_scalar("loss", loss, total_step)
-
         # writer.add_images("imgs", imgs, i)
     writer.close()
 

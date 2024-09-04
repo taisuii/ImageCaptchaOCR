@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-import common
+import development.gen_ImageCaptcha as gen_ImageCaptcha
 
 
 class mymodel(nn.Module):
@@ -27,18 +27,12 @@ class mymodel(nn.Module):
             nn.ReLU(),
             nn.MaxPool2d(2)  # [6, 512, 3, 10]
         )
-        # self.layer5 = nn.Sequential(
-        #     nn.Conv2d(in_channels=512, out_channels=512, kernel_size=3, padding=1),
-        #     nn.ReLU(),
-        #     nn.MaxPool2d(2)  # [6, 512, 1, 5]
-        # )
-
         self.layer6 = nn.Sequential(
             nn.Flatten(),  # [6, 2560] [64, 15360]
             nn.Linear(in_features=15360, out_features=4096),
             nn.Dropout(0.2),  # drop 20% of the neuron
             nn.ReLU(),
-            nn.Linear(in_features=4096, out_features=common.captcha_size * common.captcha_array.__len__())
+            nn.Linear(in_features=4096, out_features=gen_ImageCaptcha.captcha_size * gen_ImageCaptcha.captcha_array.__len__())
         )
 
     def forward(self, x):
@@ -46,10 +40,7 @@ class mymodel(nn.Module):
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)
-        # x=x.view(1,-1)[0]#[983040]
-
         x = self.layer6(x)
-        # x = x.view(x.size(0), -1)
         return x;
 
 

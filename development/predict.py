@@ -3,17 +3,15 @@ from torch.utils.data import DataLoader
 import one_hot
 import model
 import torch
-import common
+import development.gen_ImageCaptcha as gen_ImageCaptcha
 import my_datasets
 from torchvision import transforms
 
 
-def test_pred():
-    # 载入模型并推送到显卡
+def test_pred():    
     m = torch.load("model.pth").cuda()
     m.eval()
 
-    # 载入要测试的数据集
     test_data = my_datasets.mydatasets("./dataset/test")
     test_dataloader = DataLoader(test_data, batch_size=1, shuffle=False)
 
@@ -23,11 +21,11 @@ def test_pred():
         imgs = imgs.cuda()
         lables = lables.cuda()
 
-        lables = lables.view(-1, common.captcha_array.__len__())
+        lables = lables.view(-1, gen_ImageCaptcha.captcha_array.__len__())
 
         lables_text = one_hot.vectotext(lables)
         predict_outputs = m(imgs)
-        predict_outputs = predict_outputs.view(-1, common.captcha_array.__len__())
+        predict_outputs = predict_outputs.view(-1, gen_ImageCaptcha.captcha_array.__len__())
         predict_labels = one_hot.vectotext(predict_outputs)
         if predict_labels == lables_text:
             correct += 1
@@ -51,11 +49,10 @@ def pred_pic(pic_path):
     print(img.shape)
     m = torch.load("model.pth").cuda()
     outputs = m(img)
-    outputs = outputs.view(-1, len(common.captcha_array))
+    outputs = outputs.view(-1, len(gen_ImageCaptcha.captcha_array))
     outputs_lable = one_hot.vectotext(outputs)
     print(outputs_lable)
 
 
 if __name__ == '__main__':
     test_pred();
-    # pred_pic("./dataset/test/0qaf_1666524773.png")

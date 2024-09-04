@@ -1,15 +1,10 @@
-import common
+import development.gen_ImageCaptcha as gen_ImageCaptcha
 import torch
 import torch.nn.functional as F
 def text2vec(text):
-    vectors=torch.zeros((common.captcha_size,common.captcha_array.__len__()))
-    # vectors[0,0] = 1
-    # vectors[1,3] = 1
-    # vectors[2,4] = 1
-    # vectors[3, 1] = 1
-
+    vectors=torch.zeros((gen_ImageCaptcha.captcha_size,gen_ImageCaptcha.captcha_array.__len__()))
     for i in range(len(text)):
-        vectors[i,common.captcha_array.index(text[i])]=1
+        vectors[i,gen_ImageCaptcha.captcha_array.index(text[i])]=1
     return vectors
 def vectotext(vec):
 
@@ -17,7 +12,7 @@ def vectotext(vec):
 
     text_label=""
     for v in vec:
-        text_label+=common.captcha_array[v]
+        text_label+=gen_ImageCaptcha.captcha_array[v]
     return  text_label
 
 if __name__ == '__main__':
