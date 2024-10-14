@@ -1,10 +1,10 @@
-from resnet18 import MyResNet18
+from model import MyModel
 import torch
 
 def convert():
     # 加载 PyTorch 模型
     model_path = "model/resnet18_38_0.021147585306924.pth"
-    model = MyResNet18(num_classes=91)
+    model = MyModel()
     model.load_state_dict(torch.load(model_path))
     model.eval()
     # 生成一个示例输入
